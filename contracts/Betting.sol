@@ -1,9 +1,9 @@
-pragma solidity ^0.4.15; // Compiler version
+pragma solidity ^0.4.15; 
 
 contract Betting {
     
     address private owner;
-    uint initialBalance = 0;
+    uint public initialBalance = 0;
     mapping( bytes32 => uint) balance;
     
     modifier onlyOwner() {

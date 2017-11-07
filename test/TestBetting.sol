@@ -6,20 +6,12 @@ import "../contracts/Betting.sol";
 
 contract TestBetting {
 
-  function testInitialBalanceUsingDeployedContract() {
-    // MetaCoin meta = MetaCoin(DeployedAddresses.MetaCoin());
+  function testInitialBalanceWithNewBetting() {
+     Betting bet = new Betting(1000);
 
-    // uint expected = 10000;
+     uint expected = 1000;
 
-    // Assert.equal(meta.getBalance(tx.origin), expected, "Owner should have 10000 MetaCoin initially");
-  }
-
-  function testInitialBalanceWithNewMetaCoin() {
-    // MetaCoin meta = new MetaCoin();
-
-    // uint expected = 10000;
-
-    // Assert.equal(meta.getBalance(tx.origin), expected, "Owner should have 10000 MetaCoin initially");
+     Assert.equal(bet.initialBalance(), expected, "New contract deployment failed: Initial balance is different");
   }
 
 }
