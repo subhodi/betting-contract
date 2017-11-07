@@ -1,0 +1,66 @@
+{
+  "contract_name": "Bet",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "initialBalance",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_initialBalance",
+          "type": "uint256"
+        }
+      ],
+      "name": "Betting",
+      "outputs": [],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "username",
+          "type": "bytes32"
+        }
+      ],
+      "name": "getBalance",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_username",
+          "type": "bytes32"
+        }
+      ],
+      "name": "register",
+      "outputs": [],
+      "payable": false,
+      "type": "function"
+    }
+  ],
+  "unlinked_binary": "0x60606040526000600155341561001457600080fd5b5b6101bc806100246000396000f300606060405263ffffffff7c010000000000000000000000000000000000000000000000000000000060003504166318369a2a811461005e57806362577bf6146100835780638e7394611461009b578063e1fa8e84146100c3575b600080fd5b341561006957600080fd5b6100716100db565b60405190815260200160405180910390f35b341561008e57600080fd5b6100996004356100e1565b005b34156100a657600080fd5b61007160043561011f565b60405190815260200160405180910390f35b34156100ce57600080fd5b610099600435610134565b005b60015481565b6000805473ffffffffffffffffffffffffffffffffffffffff19163373ffffffffffffffffffffffffffffffffffffffff1617905560018190555b50565b6000818152600260205260409020545b919050565b6000543373ffffffffffffffffffffffffffffffffffffffff90811691161461015c57600080fd5b60008181526002602052604090205481901561017757600080fd5b6001546000838152600260205260409020555b5b505b505600a165627a7a72305820d14e0796a44557cfae59cee61e5033a231d6835be98fe19f2f5934df78cc4c410029",
+  "networks": {},
+  "schema_version": "0.0.5",
+  "updated_at": 1510044785418
+}
