@@ -1,0 +1,97 @@
+{
+  "contract_name": "Betting",
+  "abi": [
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "addr",
+          "type": "address"
+        }
+      ],
+      "name": "getBalanceInEth",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "receiver",
+          "type": "address"
+        },
+        {
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "sendCoin",
+      "outputs": [
+        {
+          "name": "sufficient",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "MetaCoin",
+      "outputs": [],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "addr",
+          "type": "address"
+        }
+      ],
+      "name": "getBalance",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "_from",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "name": "_to",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "_value",
+          "type": "uint256"
+        }
+      ],
+      "name": "Transfer",
+      "type": "event"
+    }
+  ],
+  "unlinked_binary": "0x6060604052341561000f57600080fd5b5b6102b28061001f6000396000f300606060405263ffffffff7c01000000000000000000000000000000000000000000000000000000006000350416637bd703e8811461005e57806390b98a111461008f578063d6d22fa4146100c5578063f8b2cb4f146100da575b600080fd5b341561006957600080fd5b61007d600160a060020a036004351661010b565b60405190815260200160405180910390f35b341561009a57600080fd5b6100b1600160a060020a03600435166024356101af565b604051901515815260200160405180910390f35b34156100d057600080fd5b6100d8610247565b005b34156100e557600080fd5b61007d600160a060020a0360043516610267565b60405190815260200160405180910390f35b600073__ConvertLib____________________________6396e4ee3d61013084610267565b60026000604051602001526040517c010000000000000000000000000000000000000000000000000000000063ffffffff85160281526004810192909252602482015260440160206040518083038186803b151561018d57600080fd5b6102c65a03f4151561019e57600080fd5b50505060405180519150505b919050565b600160a060020a033316600090815260208190526040812054829010156101d857506000610241565b600160a060020a033381166000818152602081905260408082208054879003905592861680825290839020805486019055917fddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef9085905190815260200160405180910390a35060015b92915050565b600160a060020a033216600090815260208190526040902061271090555b565b600160a060020a0381166000908152602081905260409020545b9190505600a165627a7a72305820fdcb6985881290c5dd777fc4f74d65acf69da09d8fead4d1f2a865c9fc2f1f320029",
+  "networks": {},
+  "schema_version": "0.0.5",
+  "updated_at": 1510035783830
+}
