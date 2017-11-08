@@ -17,7 +17,7 @@ contract('Betting', function (accounts) {
         })
       })
     }).then(function (balance) {
-      assert.equal(balance.valueOf(), 100, "Initial balance is different");
+      assert.equal(balance.valueOf(), 100, "Deployment failed: Initial balance different");
     });
   });
 
@@ -27,26 +27,15 @@ contract('Betting', function (accounts) {
     })
   });
 
-  // it("Initial balance should be 100", function () {
-  //   return Betting.deployed().then(function (instance) {
-  //     instance.register("jon", { "from": accounts[2] });
-  //     return instance.getBalance("jon");
-  //   }).then(function (balance) {
-  //     assert.equal(balance.valueOf(), 100, "Should be 100");
-  //   });
-  // });
+  it("Place bet transaction", function () {
+    return bettingContractInstance.placeBet("batman",451296, 20,{from:accounts[3]}).then(function (tx) {
+      return bettingContractInstance.getBalance("batman");
+    }).then(function (balance) {
+      assert.equal(balance.valueOf(), 80, "balance after betting should be 80");
+    });
+  });
 
-  // it("Initialize new round", function () {
-  //   return Bet.deployed().then(function (instance) {
-  //     return instance.address;
-  //   }).then(function (address) {
-  //     Betting.deployed().then(function (bettingInstance) {
-  //       bettingInstance.newRound(address, { from: accounts[2] });
-  //       assert.equal(result, true, "new round transaction error");
-  //     });
-  //   });
-  // });
-
+  
   // it("Place bet", function () {
   //   return Betting.deployed().then(function (instance) {
   //     instance.placeBet("jon", 465741, 20, { "from": accounts[2] });

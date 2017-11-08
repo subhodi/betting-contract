@@ -21,7 +21,7 @@ contract Bet is usingOraclize {
         
     }
 
-    function placeBet(bytes32 _username, int _amount) public onlyOwner {
+    function placeBet(bytes32 _username, int _amount) public  {
         participants[_username] = _amount;
         usernames.push(_username);
     }
