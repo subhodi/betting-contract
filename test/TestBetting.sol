@@ -6,12 +6,6 @@ import "../contracts/Betting.sol";
 
 contract TestBetting {
 
-  function testInitialBalanceWithNewBetting() {
-     Betting betting = new Betting(1000);
-
-     uint expected = 1000;
-
-     Assert.equal(betting.initialBalance(), expected, "New contract deployment failed: Initial balance is different");
-  }
+ 
 
 }
