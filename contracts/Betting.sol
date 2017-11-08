@@ -2,7 +2,6 @@ pragma solidity ^0.4.15;
 import "./lib/oraclizeAPI.sol";
 
 contract Betting {
-    
     address private owner;
     address public currentBet;
     uint public initialBalance = 0;
@@ -47,13 +46,13 @@ contract Betting {
     }
     
     // Betting functions
-    function placeBet(bytes32 _username, uint _amount, uint _coinsSpent) public onlyOwner {
+    function placeBet(bytes32 _username, int _amount, uint _coinsSpent) public onlyOwner {
         require(_amount > 0 && _coinsSpent > 0 && balance[_username] - _coinsSpent >= 0);
         balance[_username] -= _coinsSpent;
         betContract.placeBet(_username, _amount);
     }
     
-    function declare() onlyOwner {
+    function declare() onlyOwner payable {
         betContract.declare();
     }
 
@@ -62,39 +61,54 @@ contract Betting {
 contract BetContract is usingOraclize {
     
     address private owner;
-    uint internal marketPrice;
+    int internal marketPrice;
     bytes32 public winner;
-    mapping(bytes32 => uint) internal participants;
+    mapping(bytes32 => int) public participants;
+    bytes32[] usernames;
     
-    event LogWinner(address contractAddress, bytes32 winner);
+    event LogWinner(address indexed _contractAddress, bytes32 indexed _winner);
 
     modifier onlyOwner() {
         require(msg.sender == owner);
         _;
     }
-    function BetContract() {
-        owner = msg.sender;
+    function BetContract(address _bettingAddr) {
+        owner = _bettingAddr;
+        
     }
 
-    function placeBet(bytes32 _username, uint _amount) public onlyOwner {
+    function placeBet(bytes32 _username, int _amount) public onlyOwner {
         participants[_username] = _amount;
+        usernames.push(_username);
     }
     
     function __callback(bytes32 myid, string result) {
         if (msg.sender != oraclize_cbAddress()) throw;
-        marketPrice = parseInt(result);
+        marketPrice = int (parseInt(result));
         resolve(marketPrice);
     }
     
-    function resolve(uint _marketPrice) internal {
-        
-        // resolve algorithm
-        winner = "winner-username";
-        LogWinner(this, "winner-username");
+    function abs(int n) internal constant returns (int) {
+        if(n >= 0) return n;
+        return -n;
     }
     
-    function declare() public onlyOwner {
-        oraclize_query("URL", "json(https://api.coindesk.com/v1/bpi/currentprice/inr.json).bpi.INR.rate_float");
+    function resolve(int _marketPrice) internal {
+       // resolve algorithm
+       winner = usernames[0];
+       int winnerValue = abs(_marketPrice - participants[usernames[0]]);
+       for(uint i=1; i < usernames.length; i++) {
+               int difference = abs(_marketPrice - participants[usernames[i]]);
+               if(winnerValue > difference) {
+                   winner = usernames[i];
+                   winnerValue = difference;
+               }          
+       }
+       LogWinner(this, winner);
+    }
+    
+    function declare() public onlyOwner payable {
+        oraclize_query("URL", "json(https://api.coindesk.com/v1/bpi/currentprice/inr.json).bpi.INR.rate_float",5000000);
     }
     
     
