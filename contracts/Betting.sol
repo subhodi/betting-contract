@@ -6,7 +6,7 @@ contract Betting {
     uint public initialBalance = 0;
     mapping( bytes32 => uint) balance;
     bytes32[] users;
-    BetContract betContract;
+    Bet betContract;
     
     modifier onlyOwner() {
         require( owner == msg.sender);
@@ -20,7 +20,7 @@ contract Betting {
     
     function newRound(address _addr) public onlyOwner {
         currentBet = _addr;
-        betContract = BetContract(_addr);
+        betContract = Bet(_addr);
     }
     
     function register(bytes32 _username) public onlyOwner {

@@ -1,13 +1,13 @@
 pragma solidity ^0.4.15; 
 import "./lib/oraclizeAPI.sol";
 
-contract BetContract is usingOraclize {
+contract Bet is usingOraclize {
     
     address private owner;
     int internal marketPrice;
     bytes32 public winner;
     mapping(bytes32 => int) public participants;
-    bytes32[] usernames;
+    bytes32[] usernames; 
     
     event LogWinner(address indexed _contractAddress, bytes32 indexed _winner);
 
@@ -15,7 +15,7 @@ contract BetContract is usingOraclize {
         require(msg.sender == owner);
         _;
     }
-    function BetContract(address _bettingAddr) {
+    function Bet(address _bettingAddr) {
         owner = _bettingAddr;
         OAR = OraclizeAddrResolverI(0x6f485C8BF6fc43eA212E93BBF8ce046C7f1cb475);
         
