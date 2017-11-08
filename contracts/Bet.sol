@@ -25,6 +25,10 @@ contract Bet is usingOraclize {
         participants[_username] = _amount;
         usernames.push(_username);
     }
+
+    function getParticipantAmount(bytes32 _username) constant returns(int) {
+        return participants[_username];
+    }
     
     function __callback(bytes32 myid, string result) {
         if (msg.sender != oraclize_cbAddress()) throw;
