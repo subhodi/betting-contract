@@ -8,9 +8,9 @@ contract Bet is usingOraclize {
     bytes32 public winner;
     mapping(bytes32 => int) public participants;
     bytes32[] usernames; 
-    
-    event LogWinner(address indexed _contractAddress, bytes32 indexed _winner);
 
+    event LogMarketPrice(int indexed _marketPrice);
+    
     modifier onlyOwner() {
         require(msg.sender == owner);
         _;
@@ -32,7 +32,7 @@ contract Bet is usingOraclize {
     function __callback(bytes32 myid, string result) {
         if (msg.sender != oraclize_cbAddress()) throw;
         marketPrice = int (parseInt(result));
-        resolve(marketPrice);
+        LogMarketPrice(marketPrice);
     }
     
     function abs(int n) internal constant returns (int) {
@@ -40,18 +40,18 @@ contract Bet is usingOraclize {
         return -n;
     }
     
-    function resolve(int _marketPrice) internal {
+    function resolve()  returns(bytes32) {
        // resolve algorithm
        winner = usernames[0];
-       int winnerValue = abs(_marketPrice - participants[usernames[0]]);
+       int winnerValue = abs(marketPrice - participants[usernames[0]]);
        for(uint i=1; i < usernames.length; i++) {
-               int difference = abs(_marketPrice - participants[usernames[i]]);
+               int difference = abs(marketPrice - participants[usernames[i]]);
                if(winnerValue > difference) {
                    winner = usernames[i];
                    winnerValue = difference;
                }          
        }
-       LogWinner(this, winner);
+       return winner;
     }
     
     function declare() public  {

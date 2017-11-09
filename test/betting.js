@@ -56,33 +56,46 @@ contract('Betting', function (accounts) {
       }).then(function (bettingAmount) {
         assert.equal(bettingAmount.valueOf(), 477200, "Betting amount is different");
       });
-      });
     });
+  });
 
-    it("Declare winner", function () {
-      bettingContractInstance.declare({ from: accounts[3], gas: 900000 }).then(function (tx) {
+  it("Declare winner", function () {
+    bettingContractInstance.declare({ from: accounts[3], gas: 900000 }).then(function (tx) {
+      assert(true, "Transaction success");
+    }).catch(function (error) {
+      console.log(error.toString());
+    });
+  });
+
+  it("Should emit market price event", function () {
+    var event = betContractInstance.LogMarketPrice({}, { fromBlock: 0, toBlock: 'latest' });
+    event.watch(function (error, response) {
+      console.log(response);
+      bettingContractInstance.resolve({ from: accounts[3] }).then(function (tx) {
         assert(true, "Transaction success");
       }).catch(function (error) {
         console.log(error.toString());
-      });
+      })
+
     });
-
-    it("Should emit winner event", function () {
-      var event = betContractInstance.LogWinner({}, { fromBlock: 0, toBlock: 'latest' });
-      event.watch(function (error, response) {
-        console.log("Winner: "+web3.toAscii(response.args._winner).replace(/\u0000/g, ''));
-        bettingContractInstance.sendWinningAmount(response.args._winner,{from:accounts[3]}).then(function(tx){
-          return bettingContractInstance.getBalance("superman");
-        }).then(function(balance){
-          console.log("Winner account balance is "+balance.valueOf());
-          assert.equal(balance.valueOf(), 120, "Winner amount is not updated");
-          console.log("-----Test complete-----")
-        })        
-      });
-    });
-
-
-
-
   });
 
+  it("Should emit Winner event", function () {
+    var event = bettingContractInstance.LogWinner({}, { fromBlock: 0, toBlock: 'latest' });
+    event.watch(function (error, response) {
+      console.log(response);
+
+    });
+  });
+
+
+});
+
+  // console.log("Winner: "+web3.toAscii(response.args._winner).replace(/\u0000/g, ''));
+  // bettingContractInstance.sendWinningAmount(response.args._winner,{from:accounts[3]}).then(function(tx){
+  //   return bettingContractInstance.getBalance("superman");
+  // }).then(function(balance){
+  //   console.log("Winner account balance is "+balance.valueOf());
+  //   assert.equal(balance.valueOf(), 120, "Winner amount is not updated");
+  //   console.log("-----Test complete-----")
+  // })  

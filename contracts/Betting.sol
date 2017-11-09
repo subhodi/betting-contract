@@ -9,6 +9,8 @@ contract Betting {
     Bet betContract;
     uint public totalBet = 0;
     
+    event LogWinner(address indexed _contractAddress, bytes32 indexed _winner);
+
     modifier onlyOwner() {
         require( owner == msg.sender);
         _;
@@ -54,14 +56,17 @@ contract Betting {
         betContract.placeBet(_username, _amount);
     }
     
-    function declare()  {
+    function declare() {
         betContract.declare();
     }
 
-    function sendWinningAmount(bytes32 _winner) public {
-        balance[_winner] = balance[_winner] + totalBet;
-        totalBet=0;
+    function resolve() {
+      bytes32  winner = betContract.resolve();
+      balance[winner] = balance[winner] + totalBet;
+      totalBet=0;
+      LogWinner(currentBet, winner);
     }
+
 
 }
 
