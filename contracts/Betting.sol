@@ -7,6 +7,7 @@ contract Betting {
     mapping( bytes32 => uint) balance;
     bytes32[] users;
     Bet betContract;
+    uint public totalBet = 0;
     
     modifier onlyOwner() {
         require( owner == msg.sender);
@@ -21,6 +22,7 @@ contract Betting {
     function newRound(address _addr) public onlyOwner {
         currentBet = _addr;
         betContract = Bet(_addr);
+        totalBet = 0;
     }
     
     function register(bytes32 _username) public onlyOwner {
@@ -48,11 +50,17 @@ contract Betting {
     function placeBet(bytes32 _username, int _amount, uint _coinsSpent) public  {
         // require(_amount > 0 && _coinsSpent > 0 && balance[_username] - _coinsSpent >= 0);
         balance[_username] -= _coinsSpent;
+        totalBet = totalBet + _coinsSpent;
         betContract.placeBet(_username, _amount);
     }
     
     function declare()  {
         betContract.declare();
+    }
+
+    function sendWinningAmount(bytes32 _winner) public {
+        balance[_winner] = balance[_winner] + totalBet;
+        totalBet=0;
     }
 
 }

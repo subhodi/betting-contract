@@ -67,11 +67,17 @@ contract('Betting', function (accounts) {
       });
     });
 
-    it("Should emit event", function () {
+    it("Should emit winner event", function () {
       var event = betContractInstance.LogWinner({}, { fromBlock: 0, toBlock: 'latest' });
       event.watch(function (error, response) {
-        console.log(web3.toAscii(response.args._winner).replace(/\u0000/g, ''));
-        assert.equal(web3.toAscii(response.args._winner).replace(/\u0000/g, ''), "superman", "Winner is different");
+        console.log("Winner: "+web3.toAscii(response.args._winner).replace(/\u0000/g, ''));
+        bettingContractInstance.sendWinningAmount(response.args._winner,{from:accounts[3]}).then(function(tx){
+          return bettingContractInstance.getBalance("superman");
+        }).then(function(balance){
+          console.log("Winner account balance is "+balance.valueOf());
+          assert.equal(balance.valueOf(), 120, "Winner amount is not updated");
+          console.log("-----Test complete-----")
+        })        
       });
     });
 
