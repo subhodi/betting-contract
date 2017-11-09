@@ -37,43 +37,46 @@ contract('Betting', function (accounts) {
 
   it("Effective bet amount", function () {
     betContractInstance.getParticipantAmount("batman").then(function (balance) {
-      assert.equal(balance.valueOf(), 451296, "Participant amount is different");
+      assert.equal(balance.valueOf(), 451296, "Betting amount is different");
     });
   });
 
-  it("Declare winner", function () {
-    bettingContractInstance.declare({ from: accounts[3], gas: 900000 }).then(function (tx) {
-      assert(true, "Transaction success");
-    }).catch(function (error) {
-      console.log(error.toString());
+  it("Register 2nd user", function () {
+    return bettingContractInstance.register("superman", { from: accounts[3] }).then(function (tx) {
+      return bettingContractInstance.getBalance("superman");
+    }).then(function (balance) {
+      assert.equal(balance.valueOf(), 100, "Secon d user: Initial balance different");
+      return bettingContractInstance.placeBet("superman", 477200, 30, { from: accounts[3] }).then(function (tx) {
+        return bettingContractInstance.getBalance("superman");
+      }).then(function (balance) {
+        assert.equal(balance.valueOf(), 70, "balance after betting should be 70");
+        return betContractInstance.getParticipantAmount("superman").then(function (balance) {
+          return balance;
+        });
+      }).then(function (bettingAmount) {
+        assert.equal(bettingAmount.valueOf(), 477200, "Betting amount is different");
+      });
+      });
     });
-  });
 
-  it("Should emit event", function () {
-    var event = betContractInstance.LogWinner({ }, { fromBlock: 0, toBlock: 'latest' });
-    event.watch(function (error, response) {
-      console.log(response, error);
-      //var data = 'from: ' + response.args._from + "<br>candidateName: " + web3.toUtf8(response.args._candidateName) + "<br>";
+    it("Declare winner", function () {
+      bettingContractInstance.declare({ from: accounts[3], gas: 900000 }).then(function (tx) {
+        assert(true, "Transaction success");
+      }).catch(function (error) {
+        console.log(error.toString());
+      });
     });
+
+    it("Should emit event", function () {
+      var event = betContractInstance.LogWinner({}, { fromBlock: 0, toBlock: 'latest' });
+      event.watch(function (error, response) {
+        console.log(web3.toAscii(response.args._winner).replace(/\u0000/g, ''));
+        assert.equal(web3.toAscii(response.args._winner).replace(/\u0000/g, ''), "superman", "Winner is different");
+      });
+    });
+
+
+
+
   });
-  // it("Place bet", function () {
-  //   return Betting.deployed().then(function (instance) {
-  //     instance.placeBet("jon", 465741, 20, { "from": accounts[2] });
-  //     return instance.getBalance("jon");
-  //   }).then(function (balance) {
-  //     console.log(balance);
-  //     return Bet.deployed().then(function (instance) {
-  //       console.log(instance.address);
-  //       return instance.getParticipantAmount("jon");
-  //     }).then(function (bettingAmount) {
-  //       console.log(bettingAmount);
-  //       assert.equal(bettingAmount.valueOf(), 465741, "betting amount is incorrect");
-  //     }).catch(function(error) {
-  //       console.log(error);
-  //     });
-
-  //   });
-  // });
-
-});
 
