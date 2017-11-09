@@ -42,14 +42,20 @@ contract('Betting', function (accounts) {
   });
 
   it("Declare winner", function () {
-    bettingContractInstance.declare({from:accounts[3], gas:900000}).then(function (tx) {
+    bettingContractInstance.declare({ from: accounts[3], gas: 900000 }).then(function (tx) {
       assert(true, "Transaction success");
-    }).catch(function(error){
+    }).catch(function (error) {
       console.log(error.toString());
     });
   });
 
-
+  it("Should emit event", function () {
+    var event = betContractInstance.LogWinner({ }, { fromBlock: 0, toBlock: 'latest' });
+    event.watch(function (error, response) {
+      console.log(response, error);
+      //var data = 'from: ' + response.args._from + "<br>candidateName: " + web3.toUtf8(response.args._candidateName) + "<br>";
+    });
+  });
   // it("Place bet", function () {
   //   return Betting.deployed().then(function (instance) {
   //     instance.placeBet("jon", 465741, 20, { "from": accounts[2] });
