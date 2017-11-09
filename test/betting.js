@@ -70,7 +70,7 @@ contract('Betting', function (accounts) {
   it("Should emit market price event", function () {
     var event = betContractInstance.LogMarketPrice({}, { fromBlock: 0, toBlock: 'latest' });
     event.watch(function (error, response) {
-      console.log(response);
+      console.log("Market price fetched: " + response.args._marketPrice);
       bettingContractInstance.resolve({ from: accounts[3] }).then(function (tx) {
         assert(true, "Transaction success");
       }).catch(function (error) {
@@ -83,19 +83,14 @@ contract('Betting', function (accounts) {
   it("Should emit Winner event", function () {
     var event = bettingContractInstance.LogWinner({}, { fromBlock: 0, toBlock: 'latest' });
     event.watch(function (error, response) {
-      console.log(response);
-
+      var winner = web3.toAscii(response.args._winner).replace(/\u0000/g, '');
+      console.log("Winner is: " + winner);
+      bettingContractInstance.getBalance("superman").then(function (balance) {
+          assert.equal(balance.valueOf(), 120, "Winner amount is not updated");
+          console.log("-----Test complete-----")
+      });
     });
   });
 
 
 });
-
-  // console.log("Winner: "+web3.toAscii(response.args._winner).replace(/\u0000/g, ''));
-  // bettingContractInstance.sendWinningAmount(response.args._winner,{from:accounts[3]}).then(function(tx){
-  //   return bettingContractInstance.getBalance("superman");
-  // }).then(function(balance){
-  //   console.log("Winner account balance is "+balance.valueOf());
-  //   assert.equal(balance.valueOf(), 120, "Winner amount is not updated");
-  //   console.log("-----Test complete-----")
-  // })  
