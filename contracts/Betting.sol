@@ -51,7 +51,7 @@ contract Betting {
         betContract.placeBet(_username, _amount);
     }
     
-    function declare() onlyOwner payable {
+    function declare()  {
         betContract.declare();
     }
 

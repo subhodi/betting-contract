@@ -55,8 +55,8 @@ contract Bet is usingOraclize {
        LogWinner(this, winner);
     }
     
-    function declare() public onlyOwner payable {
-        oraclize_query("URL", "json(https://api.coindesk.com/v1/bpi/currentprice/inr.json).bpi.INR.rate_float",5000000);
+    function declare() public  {
+        oraclize_query("URL", "json(https://api.coindesk.com/v1/bpi/currentprice/inr.json).bpi.INR.rate_float");
     }
     
     

@@ -28,14 +28,28 @@ contract('Betting', function (accounts) {
   });
 
   it("Place bet transaction", function () {
-    return bettingContractInstance.placeBet("batman",451296, 20,{from:accounts[3]}).then(function (tx) {
+    return bettingContractInstance.placeBet("batman", 451296, 20, { from: accounts[3] }).then(function (tx) {
       return bettingContractInstance.getBalance("batman");
     }).then(function (balance) {
       assert.equal(balance.valueOf(), 80, "balance after betting should be 80");
     });
   });
 
-  
+  it("Effective bet amount", function () {
+    betContractInstance.getParticipantAmount("batman").then(function (balance) {
+      assert.equal(balance.valueOf(), 451296, "Participant amount is different");
+    });
+  });
+
+  it("Declare winner", function () {
+    bettingContractInstance.declare({from:accounts[3], gas:900000}).then(function (tx) {
+      assert(true, "Transaction success");
+    }).catch(function(error){
+      console.log(error.toString());
+    });
+  });
+
+
   // it("Place bet", function () {
   //   return Betting.deployed().then(function (instance) {
   //     instance.placeBet("jon", 465741, 20, { "from": accounts[2] });
