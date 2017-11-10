@@ -71,7 +71,7 @@ contract('Betting', function (accounts) {
     var event = betContractInstance.LogMarketPrice({}, { fromBlock: 0, toBlock: 'latest' });
     event.watch(function (error, response) {
       console.log("Market price fetched: " + response.args._marketPrice);
-      bettingContractInstance.resolve({ from: accounts[3] }).then(function (tx) {
+      bettingContractInstance.resolve({ from: accounts[3], gas: 900000 }).then(function (tx) {
         assert(true, "Transaction success");
       }).catch(function (error) {
         console.log(error.toString());
