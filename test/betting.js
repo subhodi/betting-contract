@@ -103,8 +103,8 @@ contract('Betting', function (accounts) {
     event.watch(function (error, response) {
       var winner = web3.toAscii(response.args._winner).replace(/\u0000/g, '');
       console.log("Winner is: " + winner);
-      bettingContractInstance.getBalance("thor").then(function (balance) {
-          assert.equal(balance.valueOf(), 160, "Winner amount is not updated");
+      bettingContractInstance.getBalance(winner).then(function (balance) {
+          assert.equal(balance.valueOf(), 150, "Winner amount is not updated");
           console.log("-----Test complete-----")
       });
     });
