@@ -28,7 +28,7 @@ contract('Betting', function (accounts) {
   });
 
   it("Place bet transaction", function () {
-    return bettingContractInstance.placeBet("batman", 451296, 20, { from: accounts[3] }).then(function (tx) {
+    return bettingContractInstance.placeBet("batman", 400100, 20, { from: accounts[3] }).then(function (tx) {
       return bettingContractInstance.getBalance("batman");
     }).then(function (balance) {
       assert.equal(balance.valueOf(), 80, "balance after betting should be 80");
@@ -37,7 +37,7 @@ contract('Betting', function (accounts) {
 
   it("Effective bet amount", function () {
     betContractInstance.getParticipantAmount("batman").then(function (balance) {
-      assert.equal(balance.valueOf(), 451296, "Betting amount is different");
+      assert.equal(balance.valueOf(), 400100, "Betting amount is different");
     });
   });
 
@@ -55,6 +55,24 @@ contract('Betting', function (accounts) {
         });
       }).then(function (bettingAmount) {
         assert.equal(bettingAmount.valueOf(), 477200, "Betting amount is different");
+      });
+    });
+  });
+
+  it("Register 3nd user", function () {
+    return bettingContractInstance.register("thor", { from: accounts[3] }).then(function (tx) {
+      return bettingContractInstance.getBalance("thor");
+    }).then(function (balance) {
+      assert.equal(balance.valueOf(), 100, "Secon d user: Initial balance different");
+      return bettingContractInstance.placeBet("thor", 410000, 40, { from: accounts[3] }).then(function (tx) {
+        return bettingContractInstance.getBalance("thor");
+      }).then(function (balance) {
+        assert.equal(balance.valueOf(), 60, "balance after betting should be 70");
+        return betContractInstance.getParticipantAmount("thor").then(function (balance) {
+          return balance;
+        });
+      }).then(function (bettingAmount) {
+        assert.equal(bettingAmount.valueOf(), 410000, "Betting amount is different");
       });
     });
   });
@@ -85,8 +103,8 @@ contract('Betting', function (accounts) {
     event.watch(function (error, response) {
       var winner = web3.toAscii(response.args._winner).replace(/\u0000/g, '');
       console.log("Winner is: " + winner);
-      bettingContractInstance.getBalance("superman").then(function (balance) {
-          assert.equal(balance.valueOf(), 120, "Winner amount is not updated");
+      bettingContractInstance.getBalance("thor").then(function (balance) {
+          assert.equal(balance.valueOf(), 160, "Winner amount is not updated");
           console.log("-----Test complete-----")
       });
     });
