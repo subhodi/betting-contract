@@ -63,10 +63,10 @@ contract('Betting', function (accounts) {
       return bettingContractInstance.getBalance("thor");
     }).then(function (balance) {
       assert.equal(balance.valueOf(), 100, "3rd user: Initial balance different");
-      return bettingContractInstance.placeBet("thor", 310000, 40, { from: accounts[2] }).then(function (tx) {
+      return bettingContractInstance.placeBet("thor", 310000, 50, { from: accounts[2] }).then(function (tx) {
         return bettingContractInstance.getBalance("thor");
       }).then(function (balance) {
-        assert.equal(balance.valueOf(), 60, "balance after betting should be 60");
+        assert.equal(balance.valueOf(), 50, "balance after betting should be 50");
         return betContractInstance.getParticipantAmount("thor").then(function (balance) {
           return balance;
         });
@@ -74,6 +74,20 @@ contract('Betting', function (accounts) {
         assert.equal(bettingAmount.valueOf(), 310000, "Betting amount is different");
       });
     });
+  });
+
+  it("Place bet again for 3rd user", function () {
+      return bettingContractInstance.placeBet("thor", 431906, 50, { from: accounts[2] }).then(function (tx) {
+        return bettingContractInstance.getBalance("thor");
+      }).then(function (balance) {
+        assert.equal(balance.valueOf(), 0, "balance after betting should be 0");
+        return betContractInstance.getParticipantAmount("thor").then(function (balance) {
+          return balance;
+        });
+      }).then(function (bettingAmount) {
+        assert.equal(bettingAmount.valueOf(), 431906, "Betting amount is different");
+      });
+
   });
 
 

@@ -51,7 +51,7 @@ contract Betting {
     
     // Betting functions
     function placeBet(bytes32 _username, int _amount, uint _coinsSpent) public  {
-        // require(_amount > 0 && _coinsSpent > 0 && balance[_username] - _coinsSpent >= 0);
+        require(_amount > 0 && _coinsSpent > 0 && balance[_username] - _coinsSpent >= 0);
         balance[_username] -= _coinsSpent;
         totalBet = totalBet + _coinsSpent;
         betContract.placeBet(_username, _amount);

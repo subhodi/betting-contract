@@ -22,8 +22,8 @@ contract Bet is usingOraclize {
     }
 
     function placeBet(bytes32 _username, int _amount) public  {
+        if(participants[_username] ==0) usernames.push(_username);
         participants[_username] = _amount;
-        usernames.push(_username);
     }
 
     function getParticipantAmount(bytes32 _username) constant returns(int) {
