@@ -3,8 +3,7 @@ var Bet = artifacts.require("./Bet.sol");
 
 var bettingContractInstance;
 var betContractInstance;
-contract('Betting', function (accounts, network) {
-console.log(network);
+contract('Betting', function (accounts) {
   it("Deploy both contracts", function () {
     return Betting.new(100, { from: accounts[2] }).then(function (bettingInstance) {
       bettingContractInstance = bettingInstance;
@@ -77,37 +76,7 @@ console.log(network);
     });
   });
 
-  it("Register 30 users-1", function () {
-    for (var i = 0; i < 50; i++) {
-      var name = "man_" + i.toString();
-      console.log(name);
-      let tx = await bettingContractInstance.register(name, { from: accounts[2] });
-    }
-  });
 
-  it("Register 30 users-2", function () {
-    for (var i = 0; i < 50; i++) {
-      var name = "man_" + i.toString();
-      console.log(name);
-     let tx = await bettingContractInstance.register(name, { from: accounts[2] });
-    }
-  });
-
-  it("place bet 30 users-1", function () {
-    var amount = 428800;
-    for (var i = 0; i < 50; i++) {
-      var name = "man_" + i.toString();
-      bettingContractInstance.placeBet(name, amount + i, 5, { from: accounts[2] });
-    }
-  });
-
-  it("place bet 30 users-2", function () {
-    var amount = 428800;
-    for (var i = 0; i < 50; i++) {
-      var name = "man_" + i.toString();
-      bettingContractInstance.placeBet(name, amount + i, 5, { from: accounts[2] });
-    }
-  });
 
   it("Declare winner", function () {
     bettingContractInstance.declare({ from: accounts[2], gas: 900000 }).then(function (tx) {
@@ -136,11 +105,41 @@ console.log(network);
       var winner = web3.toAscii(response.args._winner).replace(/\u0000/g, '');
       console.log("Winner is: " + winner);
       bettingContractInstance.getBalance(winner).then(function (balance) {
-        assert.equal(balance.valueOf(), 335, "Winner amount is not updated");
+        assert.equal(balance.valueOf(), 165, "Winner amount is not updated");
         console.log("-----Test complete-----")
       });
     });
   });
+  // it("Register 30 users-1", function () {
+  //   for (var i = 0; i < 50; i++) {
+  //     var name = "man_" + i.toString();
+  //     console.log(name);
+  //     let tx = await bettingContractInstance.register(name, { from: accounts[2] });
+  //   }
+  // });
 
+  // it("Register 30 users-2", function () {
+  //   for (var i = 0; i < 50; i++) {
+  //     var name = "man_" + i.toString();
+  //     console.log(name);
+  //    let tx = await bettingContractInstance.register(name, { from: accounts[2] });
+  //   }
+  // });
+
+  // it("place bet 30 users-1", function () {
+  //   var amount = 428800;
+  //   for (var i = 0; i < 50; i++) {
+  //     var name = "man_" + i.toString();
+  //     bettingContractInstance.placeBet(name, amount + i, 5, { from: accounts[2] });
+  //   }
+  // });
+
+  // it("place bet 30 users-2", function () {
+  //   var amount = 428800;
+  //   for (var i = 0; i < 50; i++) {
+  //     var name = "man_" + i.toString();
+  //     bettingContractInstance.placeBet(name, amount + i, 5, { from: accounts[2] });
+  //   }
+  // });
 
 });
