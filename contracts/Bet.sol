@@ -15,12 +15,12 @@ contract Bet is usingOraclize {
         require(msg.sender == owner);
         _;
     }
-    function Bet(address _bettingAddr) {
-        owner = _bettingAddr;
+    function Bet() {
+        owner = msg.sender;
         OAR = OraclizeAddrResolverI(0x6f485C8BF6fc43eA212E93BBF8ce046C7f1cb475);
-            }
+    }
 
-    function placeBet(bytes32 _username, int _amount) public  {
+    function placeBet(bytes32 _username, int _amount) public {
         participants[_username] = _amount;
         usernames.push(_username);
     }
@@ -30,13 +30,17 @@ contract Bet is usingOraclize {
     }
     
     function __callback(bytes32 myid, string result) {
-        if (msg.sender != oraclize_cbAddress()) throw;
+        if (msg.sender != oraclize_cbAddress()) {
+            throw;
+        }
         marketPrice = int (parseInt(result));
         LogMarketPrice(marketPrice);
     }
     
     function abs(int n) internal constant returns (int) {
-        if(n >= 0) return n;
+        if (n >= 0) {
+            return n;
+        }
         return -n;
     }
     
@@ -44,9 +48,9 @@ contract Bet is usingOraclize {
        // resolve algorithm
        winner = usernames[0];
        int winnerValue = abs(marketPrice - participants[usernames[0]]);
-       for(uint i=1; i < usernames.length; i++) {
+       for (uint i = 1; i < usernames.length; i++) {
                int difference = abs(marketPrice - participants[usernames[i]]);
-               if(winnerValue > difference) {
+               if (winnerValue > difference) {
                    winner = usernames[i];
                    winnerValue = difference;
                }          
@@ -54,8 +58,12 @@ contract Bet is usingOraclize {
        return winner;
     }
     
-    function declare() public  {
+    function declare() public {
         oraclize_query("URL", "json(https://api.coindesk.com/v1/bpi/currentprice/inr.json).bpi.INR.rate_float");
+    }
+
+    function getOwner() public constant returns(address) {
+        return owner;
     }
     
     

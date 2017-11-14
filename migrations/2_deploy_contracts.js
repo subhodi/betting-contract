@@ -1,8 +1,8 @@
-var Betting = artifacts.require("./Betting.sol");
-var Bet = artifacts.require("./Bet.sol");
+const Bet = artifacts.require("./Bet.sol");
+const Betting = artifacts.require("./Betting.sol");
 
 module.exports = function (deployer) {
-  deployer.deploy(Betting, 100).then(function () {
-    return deployer.deploy(Bet, Betting.address);
-  });
+  deployer.deploy(Bet);
+  deployer.link(Bet, Betting);
+  deployer.deploy(Betting, 100);
 };
