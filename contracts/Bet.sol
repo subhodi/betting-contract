@@ -10,14 +10,15 @@ contract Bet is usingOraclize {
     bytes32[] usernames; 
 
     event LogMarketPrice(int indexed _marketPrice);
-    
+
     modifier onlyOwner() {
         require(msg.sender == owner);
         _;
     }
     function Bet(address _bettingAddr) {
         owner = _bettingAddr;
-        OAR = OraclizeAddrResolverI(0x6f485C8BF6fc43eA212E93BBF8ce046C7f1cb475);
+        OAR = OraclizeAddrResolverI(0xBDBD4CB5D3DaB6b6386FcE4dD07137816bfd8b4e);
+        // OAR = OraclizeAddrResolverI(0x6f485C8BF6fc43eA212E93BBF8ce046C7f1cb475);
             }
 
     function placeBet(bytes32 _username, int _amount) public  {
