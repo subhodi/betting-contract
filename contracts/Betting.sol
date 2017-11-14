@@ -12,6 +12,7 @@ contract Betting {
     uint public totalBet = 0;
     
     event LogWinner(address indexed _contractAddress, bytes32 indexed _winner);
+    event LogBet(address indexed _contractAddress, bytes32 indexed _username, int indexed _amount);
 
     modifier onlyOwner() {
         require(owner == msg.sender);
@@ -51,11 +52,13 @@ contract Betting {
     }
     
     // Betting functions
-    function placeBet(bytes32 _username, int _amount, uint _coinsSpent) public {
-        // require(_amount > 0 && _coinsSpent > 0 && balance[_username] - _coinsSpent >= 0);
+
+    function placeBet(bytes32 _username, int _amount, uint _coinsSpent) public  {
+        require(_amount > 0 && _coinsSpent > 0 && balance[_username] - _coinsSpent >= 0);
         balance[_username] -= _coinsSpent;
         totalBet += _coinsSpent;
         betContract.placeBet(_username, _amount);
+        LogBet(currentBet, _username, _amount);
     }
     
     function declare() {

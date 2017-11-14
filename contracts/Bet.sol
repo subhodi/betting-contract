@@ -10,19 +10,22 @@ contract Bet is usingOraclize {
     bytes32[] usernames; 
 
     event LogMarketPrice(int indexed _marketPrice);
-    
+
     modifier onlyOwner() {
         require(msg.sender == owner);
         _;
     }
+
     function Bet() {
         owner = msg.sender;
         OAR = OraclizeAddrResolverI(0x6f485C8BF6fc43eA212E93BBF8ce046C7f1cb475);
     }
 
-    function placeBet(bytes32 _username, int _amount) public {
+     function placeBet(bytes32 _username, int _amount) public  {
+        if (participants[_username] == 0) {
+            usernames.push(_username);
+        }
         participants[_username] = _amount;
-        usernames.push(_username);
     }
 
     function getParticipantAmount(bytes32 _username) constant returns(int) {

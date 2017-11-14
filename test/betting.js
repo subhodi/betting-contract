@@ -5,7 +5,6 @@ var bettingContractInstance;
 var betContractInstance;
 
 contract('Betting', function (accounts) {
-
   it('Deploy both contracts', () => {
     return Betting.new(100, { from: accounts[3] })
       .then(instance => {
@@ -82,7 +81,7 @@ contract('Betting', function (accounts) {
     const event = betContractInstance.LogMarketPrice({}, { fromBlock: 0, toBlock: 'latest' });
     event.watch(function (error, response) {
       console.log("Market price fetched: " + response.args._marketPrice);
-      bettingContractInstance.resolve({ from: accounts[3] }).then(function (tx) {
+      bettingContractInstance.resolve({ from: accounts[2], gas: 4712388 }).then(function (tx) {
         assert(true, "Transaction success");
       }).catch(function (error) {
         console.error(error.toString());
@@ -101,6 +100,36 @@ contract('Betting', function (accounts) {
       });
     });
   });
+  // it("Register 30 users-1", function () {
+  //   for (var i = 0; i < 50; i++) {
+  //     var name = "man_" + i.toString();
+  //     console.log(name);
+  //     let tx = await bettingContractInstance.register(name, { from: accounts[2] });
+  //   }
+  // });
 
+  // it("Register 30 users-2", function () {
+  //   for (var i = 0; i < 50; i++) {
+  //     var name = "man_" + i.toString();
+  //     console.log(name);
+  //    let tx = await bettingContractInstance.register(name, { from: accounts[2] });
+  //   }
+  // });
+
+  // it("place bet 30 users-1", function () {
+  //   var amount = 428800;
+  //   for (var i = 0; i < 50; i++) {
+  //     var name = "man_" + i.toString();
+  //     bettingContractInstance.placeBet(name, amount + i, 5, { from: accounts[2] });
+  //   }
+  // });
+
+  // it("place bet 30 users-2", function () {
+  //   var amount = 428800;
+  //   for (var i = 0; i < 50; i++) {
+  //     var name = "man_" + i.toString();
+  //     bettingContractInstance.placeBet(name, amount + i, 5, { from: accounts[2] });
+  //   }
+  // });
 
 });
