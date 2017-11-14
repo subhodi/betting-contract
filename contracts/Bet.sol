@@ -5,7 +5,7 @@ contract Bet is usingOraclize {
     
     address private owner;
     int internal marketPrice;
-    bytes32 public winner;
+    bytes32[3] public winner;
     mapping(bytes32 => int) public participants;
     bytes32[] usernames; 
 
@@ -47,16 +47,21 @@ contract Bet is usingOraclize {
         return -n;
     }
     
-    function resolve()  returns(bytes32) {
+    function resolve()  returns(bytes32[3]) {
        // resolve algorithm
-       winner = usernames[0];
+       uint index=0;
+       winner[index] = usernames[0];
        int winnerValue = abs(marketPrice - participants[usernames[0]]);
        for (uint i = 1; i < usernames.length; i++) {
                int difference = abs(marketPrice - participants[usernames[i]]);
                if (winnerValue > difference) {
-                   winner = usernames[i];
+                   index=0;
+                   winner[index] = usernames[i];
                    winnerValue = difference;
-               }          
+               }else if(winnerValue == difference && index+1<3) {
+                   index++;
+                   winner[index] = usernames[i];
+               }     
        }
        return winner;
     }

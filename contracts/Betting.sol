@@ -66,10 +66,12 @@ contract Betting {
     }
 
     function resolve() {
-      bytes32  winner = betContract.resolve();
-      balance[winner] = balance[winner] + totalBet;
+      bytes32[3] memory winner = betContract.resolve();
+      balance[winner[0]] = balance[winner[0]] + 100;
+      balance[winner[1]] = balance[winner[1]] + 100;
+      balance[winner[2]] = balance[winner[2]] + 100;
       totalBet = 0;
-      LogWinner(currentBet, winner);
+      LogWinner(currentBet, winner[0]);
     }
 
 
