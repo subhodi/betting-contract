@@ -6,10 +6,10 @@ var betContractInstance;
 
 contract('Betting', function (accounts) {
   it('Deploy both contracts', () => {
-    return Betting.new(100, { from: accounts[3] })
+    return Betting.new(100, { from: accounts[0] })
       .then(instance => {
         bettingContractInstance = instance;
-        return instance.newRound({ from: accounts[3] });
+        return instance.newRound({ from: accounts[0] });
       })
       .then(tx => bettingContractInstance.currentBet())
       .then(instance => {
@@ -22,7 +22,7 @@ contract('Betting', function (accounts) {
   });
 
   it("Register 1st user", () => {
-    return bettingContractInstance.register("batman", { from: accounts[3] })
+    return bettingContractInstance.register("batman", { from: accounts[0] })
       .then(tx => {
         return bettingContractInstance.getBalance("batman");
       })
@@ -32,7 +32,7 @@ contract('Betting', function (accounts) {
   });
 
   it("Place bet transaction", () => {
-    return bettingContractInstance.placeBet("batman", 451296, 20, { from: accounts[3] })
+    return bettingContractInstance.placeBet("batman", 451296, 20, { from: accounts[0] })
       .then(tx => {
         return bettingContractInstance.getBalance("batman");
       })
@@ -48,11 +48,11 @@ contract('Betting', function (accounts) {
   });
 
   it("Register 2nd user", () => {
-    return bettingContractInstance.register("superman", { from: accounts[3] }).then(function (tx) {
+    return bettingContractInstance.register("superman", { from: accounts[0] }).then(function (tx) {
       return bettingContractInstance.getBalance("superman");
     }).then(function (balance) {
       assert.equal(balance.valueOf(), 100, "Second user: Initial balance different");
-      return bettingContractInstance.placeBet("superman", 451296, 30, { from: accounts[3] })
+      return bettingContractInstance.placeBet("superman", 451296, 30, { from: accounts[0] })
         .then(function (tx) {
           return bettingContractInstance.getBalance("superman");
         })
@@ -70,11 +70,11 @@ contract('Betting', function (accounts) {
   });
 
   it("Register 3rd user", () => {
-    return bettingContractInstance.register("ironman", { from: accounts[3] }).then(function (tx) {
+    return bettingContractInstance.register("ironman", { from: accounts[0] }).then(function (tx) {
       return bettingContractInstance.getBalance("ironman");
     }).then(function (balance) {
       assert.equal(balance.valueOf(), 100, "Third user: Initial balance different");
-      return bettingContractInstance.placeBet("ironman", 451296, 30, { from: accounts[3] })
+      return bettingContractInstance.placeBet("ironman", 451296, 30, { from: accounts[0] })
         .then(function (tx) {
           return bettingContractInstance.getBalance("ironman");
         })
@@ -93,7 +93,7 @@ contract('Betting', function (accounts) {
 
 
   it("Declare winner", () => {
-    bettingContractInstance.declare({ from: accounts[3], gas: 900000 }).then(function (tx) {
+    bettingContractInstance.declare({ from: accounts[0], gas: 900000 }).then(function (tx) {
       assert(true, "Transaction success");
     }).catch(function (error) {
       console.error(error.toString());
@@ -104,7 +104,7 @@ contract('Betting', function (accounts) {
     const event = betContractInstance.LogMarketPrice({}, { fromBlock: 0, toBlock: 'latest' });
     event.watch(function (error, response) {
       console.log("Market price fetched: " + response.args._marketPrice);
-      bettingContractInstance.resolve({ from: accounts[2], gas: 4712388 }).then(function (tx) {
+      bettingContractInstance.resolve({ from: accounts[0], gas: 4712388 }).then(function (tx) {
         assert(true, "Transaction success");
       }).catch(function (error) {
         console.error(error.toString());
@@ -134,7 +134,7 @@ contract('Betting', function (accounts) {
   //   for (var i = 0; i < 50; i++) {
   //     var name = "man_" + i.toString();
   //     console.log(name);
-  //     let tx = await bettingContractInstance.register(name, { from: accounts[2] });
+  //     let tx = await bettingContractInstance.register(name, { from: accounts[0] });
   //   }
   // });
 
@@ -142,7 +142,7 @@ contract('Betting', function (accounts) {
   //   for (var i = 0; i < 50; i++) {
   //     var name = "man_" + i.toString();
   //     console.log(name);
-  //    let tx = await bettingContractInstance.register(name, { from: accounts[2] });
+  //    let tx = await bettingContractInstance.register(name, { from: accounts[0] });
   //   }
   // });
 
@@ -150,7 +150,7 @@ contract('Betting', function (accounts) {
   //   var amount = 428800;
   //   for (var i = 0; i < 50; i++) {
   //     var name = "man_" + i.toString();
-  //     bettingContractInstance.placeBet(name, amount + i, 5, { from: accounts[2] });
+  //     bettingContractInstance.placeBet(name, amount + i, 5, { from: accounts[0] });
   //   }
   // });
 
@@ -158,7 +158,7 @@ contract('Betting', function (accounts) {
   //   var amount = 428800;
   //   for (var i = 0; i < 50; i++) {
   //     var name = "man_" + i.toString();
-  //     bettingContractInstance.placeBet(name, amount + i, 5, { from: accounts[2] });
+  //     bettingContractInstance.placeBet(name, amount + i, 5, { from: accounts[0] });
   //   }
   // });
 
