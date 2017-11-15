@@ -22,6 +22,7 @@ contract Betting {
     function Betting(uint _initialBalance) public {
         owner = msg.sender;
         initialBalance = _initialBalance;
+        newRound();
     }
     
     function newRound() public onlyOwner returns(address) {
